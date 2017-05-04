@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# --------------------------------------------------------------------------- #\n# --------------------------------------------------------------------------- #\n# vinddata for Husahagi\nvh <- read_excel(\"data/Vinddata_Husahagi.xlsx\")\n\nws.vh <- vh[, c(1:7)]\nhojde <- c(104.3, 104, 70.6, 70.2, 46.1, 45.8)\nnames(ws.vh) <- c(\"Tid\", hojde)\nws.vh$Site <- \"Husahagi\"\nws.vh$Var <- \"Hastighed\"\nws.vh_long <- ws.vh %>% gather(Hojde, Value, -Tid, -Site, -Var)\n\nwd.vh <- vh[, c(1, 8:9)]\nhojde <- c(71.1, 38)\nnames(wd.vh) <- c(\"Tid\", hojde)\nwd.vh$Site <- \"Husahagi\"\nwd.vh$Var <- \"Retning\"\nwd.vh_long <- wd.vh %>% gather(Hojde, Value, -Tid, -Site, -Var)\n\nvh_long <- bind_rows(ws.vh_long, wd.vh_long)\nrm(vh, ws.vh, ws.vh_long, wd.vh, wd.vh_long, hojde)\n\n# --------------------------------------------------------------------------- #\n# vinddata for Suduroy\nvs <- read_excel(\"data/Vinddata_Suduroy.xlsx\")\nvs <- vs[, c(1, grep(\"avg\", names(vs)))]\nvs <- vs[, -grep(\":0\", names(vs))]\nvs <- vs[, -grep(\":9\", names(vs))]\nvs <- vs[, -grep(\":13\", names(vs))]\n\nws.vs <- vs[, c(1:7)]\nhojde <- c(76.50, 76.51, 72.3, 71.5, 52.8, 52.1)\nnames(ws.vs) <- c(\"Tid\", hojde)\nws.vs$Site <- \"Suduroy\"\nws.vs$Var <- \"Hastighed\"\nws.vs_long <- ws.vs %>% gather(Hojde, Value, -Tid, -Site, -Var)\n\nwd.vs <- vs[, c(1, 8:9)]\nhojde <- c(69.3, 48.3)\nnames(wd.vs) <- c(\"Tid\", hojde)\nwd.vs$Site <- \"Suduroy\"\nwd.vs$Var <- \"Retning\"\nwd.vs_long <- wd.vs %>% gather(Hojde, Value, -Tid, -Site, -Var)\n\nvs_long <- bind_rows(ws.vs_long, wd.vs_long)\nrm(vs, ws.vs, ws.vs_long, wd.vs, wd.vs_long, hojde)\n\n# --------------------------------------------------------------------------- #\n# sammenfat datafiler\nw <- bind_rows(vs_long, vh_long)\nrm(vs_long, vh_long)\nw$Hojde <- as.numeric(w$Hojde)\n\nw <- w %>% filter(Hojde != 52.1) # ikke til at stole på\n\n# --------------------------------------------------------------------------- #\n## Gennemsnitsserier for hastighed og retning per site\nwd <- w %>% filter(Var == \"Retning\") %>% select(-Hojde) %>% group_by(Site, Var, Tid) %>% \n  summarize(mean = wdmean(Value)) \nwdd <- wd %>% spread(Site, mean) %>% group_by(Var, Tid) %>% \n  mutate(Suduroy = Husahagi - diff_wd(Husahagi, Suduroy)) %>% gather(Site, mean, -Var, -Tid)\nws <- w %>% filter(Var == \"Hastighed\" & Hojde < 100) %>% select(-Hojde) %>%\n  group_by(Site, Var, Tid) %>% summarize(mean = mean(Value, na.rm = T))\nwmean <- ungroup(bind_rows(ws, wd) %>% rename(Value = mean))\nwmean_dum <- ungroup(bind_rows(ws, wdd) %>% rename(Value = mean)) # mindste afstand for vindretning mellem sites\n\nrm(wd, ws, wdd)\n\n# --------------------------------------------------------------------------- #\n# --------------------------------------------------------------------------- #\n",
+    "created" : 1477560336982.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2171324013",
+    "id" : "708446D1",
+    "lastKnownWriteTime" : 1477560666,
+    "last_content_update" : 1477560666370,
+    "path" : "C:/Rdevelop/Suduroy/libs/getData.R",
+    "project_path" : "libs/getData.R",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

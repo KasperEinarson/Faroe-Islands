@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "# --------------------------------------------------------------------------- #\n# --------------------------------------------------------------------------- #\n\n# --------------------------------------------------------------------------- #\n# Convert data to applicable form ####\nw1 <- wmean[!(wmean$Var == \"Retning\" & wmean$Site == \"Suduroy\"), ]\nw1$Var[w1$Var == \"Hastighed\"] <- w1$Site[w1$Var == \"Hastighed\"]\nw2 <- w1 %>% select(-Site) %>% spread(Var, Value) %>% group_by(Tid) %>%\n  mutate(as_ws = assign_ws(Husahagi), as_wd = assign_wd(Retning), \n         ws_num = assign_ws(Husahagi, type = \"num\"), wd_num = assign_wd(Retning, type = \"num\")) %>%\n  mutate(e = Husahagi - Suduroy, e_per = e/Husahagi)\nw2 <- ungroup(w2[apply(w2, 1, function(r) all(!is.na(r))), ])\n## --\nrm(w1)\n\n# --------------------------------------------------------------------------- #\n# Analysis of the deviation between the wind speeds at the two Sites ####\nw_e <- myfejl(w2)\n\n# --------------------------------------------------------------------------- #\n# Calculate correlation between wind directions and wind speed levels ####\nw_corall <- mycor(w2)\nw_corall$Data <- 1\nw_corall <- left_join(w_corall, w_e %>% select(ws_num, wd_num, fejl = mae, fejl_p = mae_p), by = c(\"ws_num\", \"wd_num\"))\n\n# --------------------------------------------------------------------------- #\n# --------------------------------------------------------------------------- #\n",
+    "created" : 1477288816999.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1317379979",
+    "id" : "95CC66FC",
+    "lastKnownWriteTime" : 1477377600,
+    "last_content_update" : 1477377601001,
+    "path" : "G:/ELT/R/SEV/Suduroy/libs/Analyse_vindretning.R",
+    "project_path" : "libs/Analyse_vindretning.R",
+    "properties" : {
+        "source_window_id" : "ws48eigpvy7x2"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

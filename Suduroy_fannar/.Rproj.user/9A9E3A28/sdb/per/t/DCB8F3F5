@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "# .libPaths(<Mappen som indeholder de installerede pakker du selv har hentet>)\n# .libPaths skal kun bruges, hvis installerede pakker bliver manuelt lagt i en bestemt mappe!\n.libPaths(c(\"C:/Rdevelop/myLIBRARY\", \"C:/Rdevelop/myPACKAGES\")) # FTHs sti til installerede pakker\n\nlibrary(dplyr, quietly = T, warn.conflicts = F, verbose = F)\nlibrary(tidyr, quietly = T, warn.conflicts = F, verbose = F)\nlibrary(lubridate, quietly = T, warn.conflicts = F, verbose = F)\nlibrary(readxl, quietly = T, warn.conflicts = F, verbose = F)\nlibrary(ggplot2, quietly = T, warn.conflicts = F, verbose = F)\n\n# library(addfuns)\n# library(skillskore)\n\nsource(\"libs/fncs.R\")\n",
+    "created" : 1477473486239.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3815979684",
+    "id" : "DCB8F3F5",
+    "lastKnownWriteTime" : 1477474376,
+    "last_content_update" : 1477474376483,
+    "path" : "G:/ELT/R/SEV/Suduroy/libs/initR.R",
+    "project_path" : "libs/initR.R",
+    "properties" : {
+        "source_window_id" : "ws48eigpvy7x2"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
